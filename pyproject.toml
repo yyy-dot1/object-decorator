@@ -1,0 +1,16 @@
+[project]
+name = "20251130"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "田中結那（たなかゆいな）",email = "yuina.tnk@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
