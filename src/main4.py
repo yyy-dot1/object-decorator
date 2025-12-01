@@ -107,5 +107,5 @@ food_2 = Expiry.create_from_id(2,"2025-01-08")
 food_3 = Expiry.create_from_id(3,"2025-01-08")
 
 print(f"ID 1:{food_1.name}(期限:{food_1.expiry_date})")
-print(f"ID 2:{food_2.name}(期限:{food_2.expiry_date})")
+#print(f"ID 2:{food_2.name}(期限:{food_2.expiry_date})")
 # print(f"ID 3:{food_3.name}(期限:{food_3.expiry_date})")
