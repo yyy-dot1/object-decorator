@@ -1,3 +1,4 @@
+#猫バージョンに変更しよう
 
 class Kitchen:
     def __init__(self,name,use):

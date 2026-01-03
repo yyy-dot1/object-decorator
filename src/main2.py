@@ -1,3 +1,4 @@
+#猫バージョンに変更しよう
 
 def my_home(f):
     def _wrapper(*args, **keywards):
