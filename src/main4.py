@@ -1,3 +1,35 @@
+cat_data_list = [
+    {
+        "name": "ちゃとら",
+        "personality": 5,
+        "status": "1:指名マッチ",
+        "waiting_days": 5,
+        "medical_history": [
+            {"date": "2025-10-01", "reason": "ワクチン"},
+            {"date": "2025-12-25", "reason": "健康診断"}
+        ]
+    },
+    {
+        "name": "くろ",
+        "personality": 3,
+        "status": "2:エリアマッチ",
+        "waiting_days": 60,
+        "medical_history": [
+            {"date": "2025-05-10", "reason": "去勢手術"},
+            {"date": "2025-11-01", "reason": "定期検診"}
+        ]
+    },
+    {
+        "name": "しろ",
+        "personality": 4,
+        "status": "1:指名マッチ",
+        "waiting_days": 15,
+        "medical_history": [] # 履歴なし
+    }
+]
+
+# ユーザーの好み
+user_setting = {"target_personality": 5}
 
 def log_print(f):
     def _wrapper(*args, **keywards):
@@ -7,105 +39,32 @@ def log_print(f):
         return result
     return _wrapper
 
-class Kitchen:
-    def __init__(self,name,use):
-        self.name = name
-        self.use = use
+class MatchBase:
+    def __init__(self,cat_name,status):
+        self.cat_name = cat_name
+        self.status = status
 
     @log_print
-    def display(self):
-        print(f"材料:{self.name},調理方法:{self.use}")
+    def display(self,score):
+        prefix = "⭐︎" if "指名" in self.status else ""
+        print(f"{prefix}猫:{self.cat_name},スコア:{score}")
 
     @classmethod
-    def create_from_id(cls,food_id,date):
-        # print(cls) # <class '__main__.Expiry'>
-        if food_id == 1:
-            name_data = tomato.get_name()
-            # print(date) #2026-01-15
-            expiry_data = date
-        elif food_id == 2:
-            name_data = corn.get_name()
-            # print(date) #2025-01-08
-            expiry_data = date
-        elif food_id == 3:
-            name_data = rice.get_name()
-            # print(date) #2025-01-08
-            expiry_data = date
-        else:
-            raise ValueError("無効なIDです")
-        return cls(name_data,expiry_data)
+    def create_from_data(cls,cat_obj,user_pref):
+        score = 0
+        if cat_obj.personality == user_pref["target_personality"]:
+            score += 500
+        return cls(cat_obj.name,cat_obj.status),score
 
-class Food(Kitchen):
-    def __init__(self,name):
-        self.food_name = name
-    @log_print
-    def get_name(self,prefix=""):
-        return prefix + self.food_name
-    
-    @log_print
-    def set_stock(self,quantity):
-        self.quantity = quantity
-        return f"【在庫情報】 品目:{self.food_name},数量:{quantity}"
-    
-class Expiry(Kitchen):
-    def __init__(self,name,expiry_date):
+class Cat(MatchBase):
+    def __init__(self,name,personality,status):
         self.name = name
-        self.expiry_date = expiry_date
-         
-class Cook(Kitchen):
-    def __init__(self,cook):
-        self.how_cook = cook
-    
-    def get_use(self,prefix=""):
-        return prefix + self.how_cook
+        self.personality = personality
+        self.status = status
 
-log_without_decorater = log_print(Cook("焼く").get_use)
+tama = Cat("たま", 5, "1:指名マッチ")
+user_setting = {"target_personality": 5}
 
-print(f"log_without_decorater:{log_without_decorater()}")
+result_instance,final_score = MatchBase.create_from_data(tama,user_setting)
 
-tomato = Food("トマト") 
-cut = Cook("切る")
-corn = Food("とうもろこし")
-egg = Food("卵")
-fry = Cook("焼く")
-rice = Food("お米")
-wrap = Cook("包む")
-
-cook1 = Kitchen(
-    name=tomato.get_name(),
-    use=cut.get_use()
-)
-
-cook2 = Kitchen(
-    name=corn.get_name(),
-    use=fry.get_use()
-)
-
-cook3 = Kitchen(
-    name=rice.get_name(),
-    use=fry.get_use()
-)
-
-cook4 = Kitchen(
-    name=egg.get_name("半熟の"),
-    use=wrap.get_use("優しく")
-)
-
-cook1.display()
-cook2.display()
-cook3.display()
-cook4.display()
-
-stock = egg.set_stock(4)
-print(stock)
-
-stock = tomato.set_stock(10)
-print(stock)
-
-food_1= Expiry.create_from_id(1,"2026-01-15")
-food_2 = Expiry.create_from_id(2,"2025-01-08")
-food_3 = Expiry.create_from_id(3,"2025-01-08")
-
-print(f"ID 1:{food_1.name}(期限:{food_1.expiry_date})")
-#print(f"ID 2:{food_2.name}(期限:{food_2.expiry_date})")
-# print(f"ID 3:{food_3.name}(期限:{food_3.expiry_date})")
+result_instance.display(final_score)
