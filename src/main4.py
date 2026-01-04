@@ -24,11 +24,10 @@ cat_data_list = [
         "personality": 4,
         "status": "1:指名マッチ",
         "waiting_days": 15,
-        "medical_history": [] # 履歴なし
+        "medical_history": []
     }
 ]
 
-# ユーザーの好み
 user_setting = {"target_personality": 5}
 
 def log_print(f):

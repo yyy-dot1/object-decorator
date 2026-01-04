@@ -1,37 +1,42 @@
-#猫バージョンに変更しよう
+def shop_manager(f):
+    def _wrapper(*args, **keywards):
 
-def my_home(f):
-    def _wrapper(*args, **keywards): #*args,**keywordsはなくてもOK
-
-        print(f"wood2:{f.__name__}の実行") #(例) woodの実行
+        print(f"店舗:{f.__name__}の在庫・名簿を更新します。")
         
         v = f(*args, **keywards)
         
-        print(f"wood2:{v}") #(例) 机,ベッド,椅子
-
+        print(f"【更新完了】{v}")
+        return v
     return _wrapper
 
-def wood(*args, **keyawrds):
-# def wood(key3, *args, **keyawrds):
-    # print(f"key3: {key3}")
-    print(f"args: {args}")
-    print(keyawrds)
+@shop_manager
+def cat_staff(key3,*args, **keyawrds):
+
+    print(f"key3: {key3}") 
+    print(f"args: {args}") 
+    print(f"keyawrds:{keyawrds}")
+
+    print(f"-----登録ID: {args} -------")
+    
     s = ""
     for key in keyawrds:
-        s += str(keyawrds[key])
-    return f"str: {s}"
-    #return f" 机,ベッド,椅子"
-wood2 = my_home(wood)
+        s += f"[{key}:{keyawrds[key]}]"
+    return f"猫スタッフ名簿: {s}"
 
-@my_home
-def electricity():
-    return "電子レンジ,TV,冷蔵庫"
-@my_home
-def cloth():
-    return "カーテン,布団,ソファ"
+cat_staff = shop_manager(cat_staff)
+    
+@shop_manager
+def cafe_menu():
+    return "肉球ラテ, 猫耳ケーキ, またたび茶"
 
-print(f"wood2:{wood2()}")
-# wood2(1, 2, 3)
-# wood2(key1=1, key2=2, key3=3)
-electricity()
-cloth()
+@shop_manager
+def cat_goods():
+    return "猫柄ポーチ, 爪とぎポストカード, 猫耳カチューシャ"
+
+cat_staff(1, 2, 3)
+cat_staff(key1=1, key2=2, key3=3)
+cat_staff(101, 名前="たま", 種類="三毛猫", 性格="甘えん坊")
+cat_staff(102, 名前="くろ", 種類="黒猫", 担当="お出迎え")
+
+cafe_menu()
+cat_goods()
